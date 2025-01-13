@@ -33,6 +33,7 @@ class Snake:
     def __init__(self):
         self.body = [Vector2(6, 9), Vector2(5, 9), Vector2(4, 9)]
         self.direction = Vector2(1, 0)
+        self.add_segment = False
         
     def draw(self):
         for segment in self.body:
@@ -40,10 +41,11 @@ class Snake:
             pygame.draw.rect(screen, DARK_GREEN, segment_rect, 0, 7)
             
     def update(self):
-        self.body = self.body[:-1] 
-        self.body.insert(0, self.body[0] + self.direction)   
-        
-
+        self.body.insert(0, self.body[0] + self.direction)
+        if self.add_segment ==  True:            
+            self.add_segment = False 
+        else:
+            self.body = self.body[:-1] 
 class Game:
     def __init__(self):
         self.snake = Snake()
@@ -59,7 +61,8 @@ class Game:
         
     def check_collision_with_food(self):
         if self.snake.body[0] == self.food.position:
-            self.food.position = self.food.generate_random_pos(self.snake.body) 
+            self.food.position = self.food.generate_random_pos(self.snake.body)
+            self.snake.add_segment = True
             
     
         
